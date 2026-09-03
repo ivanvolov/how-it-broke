@@ -223,6 +223,7 @@ function indexPage(stories, planned) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#FAF9F5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23FAF9F5'/%3E%3Cpath d='M8 16h13M15 10l6 6-6 6' fill='none' stroke='%23C15F3C' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <title>How It Broke</title>
 <style>
   :root{--paper:#FAF9F5;--ink:#141413;--ink2:#5F5E59;--ink3:#93918A;--rule:#E7E4DB;--clay:#C15F3C;
