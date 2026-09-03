@@ -203,18 +203,26 @@ async function buildStory(dir, template) {
 function indexPage(stories, planned) {
   const cards = stories
     .map(
-      (s) => `      <li><a href="./${s.id}/">
-        <b>${escapeHtml(s.subject)}</b>
-        <span>${escapeHtml(s.dek)}</span>
+      (s, i) => `      <li class="item"><a class="in" href="./${s.id}/">
+        <span class="n">FIG. ${String(i + 1).padStart(2, "0")} — PUBLISHED</span>
+        <span class="sub">${escapeHtml(s.subject)}${
+          s.klass ? ` <i>${escapeHtml(s.klass)}</i>` : ""
+        }</span>
+        <span class="dek">${escapeHtml(s.dek)}</span>${
+          s.loss ? `\n        <span class="loss">${escapeHtml(s.loss)}</span>` : ""
+        }
       </a></li>`
     )
     .join("\n");
   const soon = planned
     .map(
-      (s) => `      <li class="soon">
-        <b>${escapeHtml(s.subject)} <i>${escapeHtml(s.klass)}</i></b>
-        <span>${escapeHtml(s.dek)}</span>
-      </li>`
+      (s, i) => `      <li class="item soon"><span class="in">
+        <span class="n">FIG. ${String(stories.length + i + 1).padStart(2, "0")} — PLANNED</span>
+        <span class="sub">${escapeHtml(s.subject)} <i>${escapeHtml(s.klass)}</i></span>
+        <span class="dek">${escapeHtml(s.dek)}</span>${
+          s.loss ? `\n        <span class="loss">${escapeHtml(s.loss)}</span>` : ""
+        }
+      </span></li>`
     )
     .join("\n");
   return `<!doctype html>
@@ -222,49 +230,65 @@ function indexPage(stories, planned) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#FAF9F5">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23FAF9F5'/%3E%3Cpath d='M8 16h13M15 10l6 6-6 6' fill='none' stroke='%23C15F3C' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#E7EBEE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E7EBEE'/%3E%3Cpath d='M8 16h13M15 10l6 6-6 6' fill='none' stroke='%23D9531E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <title>How It Broke</title>
 <style>
-  :root{--paper:#FAF9F5;--ink:#141413;--ink2:#5F5E59;--ink3:#93918A;--rule:#E7E4DB;--clay:#C15F3C;
-    --serif:Tiempos,Charter,Georgia,Cambria,"Times New Roman",serif;
-    --sans:Styrene,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+  :root{--ground:#E7EBEE;--panel:#FBFCFD;--edge:#AEBCC8;--edge-hi:#5E7488;
+    --ink:#16232D;--ink2:#53646F;--ink3:#84939E;--accent:#D9531E;
+    --display:Futura,"Gill Sans","Avenir Next",-apple-system,sans-serif;
+    --body:Charter,Georgia,Cambria,"Times New Roman",serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Monaco,Consolas,monospace;
+    --lift:0 0 0 1px var(--edge-hi),0 14px 30px -14px rgba(22,35,45,.35)}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font:400 20px/1.65 var(--serif);
-    padding:64px 22px 120px;-webkit-font-smoothing:antialiased}
-  main{max-width:680px;margin:0 auto}
-  .brand{font:600 15px/1 var(--sans);color:var(--clay)}
-  h1{font:600 42px/1.15 var(--sans);letter-spacing:-.03em;margin:20px 0 0}
-  .lede{color:var(--ink2);margin:16px 0 0;max-width:60ch}
-  ul{list-style:none;padding:0;margin:44px 0 0}
-  li{border-top:1px solid var(--rule)}
-  li:last-child{border-bottom:1px solid var(--rule)}
-  a{display:block;padding:22px 0;text-decoration:none;color:inherit}
-  a:hover b{color:var(--clay)}
-  b{display:block;font:600 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+  body{margin:0;background:var(--ground);color:var(--ink);font:400 19px/1.62 var(--body);
+    padding:64px 22px 120px;-webkit-font-smoothing:antialiased;
+    background-image:linear-gradient(rgba(94,116,136,.07) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(94,116,136,.07) 1px,transparent 1px);
+    background-size:26px 26px}
+  main{max-width:720px;margin:0 auto}
+  .brand{font:600 15px/1 var(--mono);color:var(--accent);letter-spacing:.14em;text-transform:uppercase}
+  h1{font:500 36px/1.16 var(--display);text-transform:uppercase;letter-spacing:.02em;
+    margin:22px 0 0;text-wrap:balance}
+  .lede{color:var(--ink2);margin:16px 0 0;max-width:52ch;font-size:19px}
+  .list{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:1fr;gap:18px}
+  .item .in{display:block;height:100%;text-decoration:none;color:inherit;
+    background:var(--panel);border:1px solid var(--edge);padding:20px 22px;position:relative;
+    transition:border-color .2s ease,box-shadow .2s ease}
+  .item .in::before,.item .in::after{content:"";position:absolute;width:9px;height:9px;
+    pointer-events:none;border:0 solid var(--edge-hi);transition:border-color .2s}
+  .item .in::before{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}
+  .item .in::after{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
+  a.in:hover{border-color:var(--edge-hi);box-shadow:var(--lift)}
+  a.in:hover::before,a.in:hover::after{border-color:var(--accent)}
+  a.in:hover .sub{color:var(--accent)}
+  .n{display:block;font:500 11px/1 var(--mono);letter-spacing:.12em;color:var(--ink3);margin-bottom:12px}
+  .sub{display:block;font:600 12.5px/1.3 var(--mono);letter-spacing:.07em;text-transform:uppercase;
     color:var(--ink3);transition:color .2s}
-  span{display:block;margin-top:10px;font-size:19px;color:var(--ink)}
-  b i{font-style:normal;color:var(--clay);margin-left:8px}
-  li.soon{color:var(--ink3)}
-  li.soon span{color:var(--ink3)}
-  li.soon b i{color:var(--ink3)}
-  li.soon > b,li.soon > span{padding:0}
-  li.soon{padding:22px 0}
-  h2{font:600 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+  .sub i{font-style:normal;color:var(--accent);margin-left:8px}
+  .dek{display:block;margin-top:10px;font-size:17px;line-height:1.55;color:var(--ink)}
+  .loss{display:inline-block;margin-top:12px;font:600 13px/1 var(--mono);
+    font-variant-numeric:tabular-nums;color:var(--accent)}
+  .soonhead{font:600 12.5px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;
     color:var(--ink3);margin:56px 0 0}
+  li.soon .in{background:rgba(251,252,253,.55)}
+  li.soon .dek{color:var(--ink2)}
+  li.soon .sub{color:var(--ink3)}
+  li.soon .sub i{color:var(--ink3)}
+  li.soon .loss{color:var(--ink2);font-weight:400}
+  @media(max-width:640px){h1{font-size:27px}body{font-size:17.5px;padding-top:44px}}
 </style>
 </head>
 <body>
 <main>
   <div class="brand">How It Broke</div>
   <h1>Security failures, at the depth you want them.</h1>
-  <p class="lede">Every story is three parts, and every part has five levels of detail you dial
-  yourself. One sentence, or the post-mortem. Same page.</p>
-  <ul>
+  <p class="lede">One incident per page, from a single sentence down to the calldata. You choose the depth.</p>
+  <ul class="list">
 ${cards}
   </ul>
-  <h2>Coming soon</h2>
-  <ul>
+  <h2 class="soonhead">Coming soon</h2>
+  <ul class="list">
 ${soon}
   </ul>
 </main>
