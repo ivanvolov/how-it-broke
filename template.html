@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FAF9F5">
+<title>__TITLE__ — How It Broke</title>
+<style>
+:root{
+  --paper:#FAF9F5;      /* warm page */
+  --raise:#FFFFFF;      /* the block that lifts */
+  --sand:#F0EEE6;       /* notice, code */
+  --ink:#141413;
+  --ink2:#5F5E59;
+  --ink3:#93918A;
+  --rule:#E7E4DB;
+  --clay:#C15F3C;       /* accent, used sparingly */
+  --clay-soft:#D97757;
+  --measure:724px;
+  --serif:Tiempos,Charter,Georgia,Cambria,"Times New Roman",serif;
+  --sans:Styrene,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Monaco,Consolas,monospace;
+  --lift:0 1px 2px rgba(20,20,19,.05), 0 12px 32px -10px rgba(20,20,19,.14);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font:400 21px/1.68 var(--serif);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  padding:56px 0 calc(140px + env(safe-area-inset-bottom));
+}
+.col{max-width:var(--measure);margin:0 auto;padding:0 22px}
+
+/* ---------- masthead ---------- */
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand b{font:600 15px/1 var(--sans);letter-spacing:.01em;color:var(--clay)}
+.brand span{font:400 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+h1{font:600 44px/1.15 var(--sans);letter-spacing:-.03em;margin:26px 0 0;color:var(--ink)}
+.dek{font:400 21px/1.55 var(--serif);color:var(--ink2);margin:18px 0 0}
+
+/* sits under the brand, above the headline — so it stays quiet */
+.notice{
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  margin:13px 0 0;font:400 14.5px/1.5 var(--sans);color:var(--ink3);
+}
+.notice .g{display:inline-flex;align-items:center;gap:2px;color:var(--clay)}
+.notice svg{width:17px;height:17px}
+
+/* ---------- the section, flanked ---------- */
+section{
+  display:grid;
+  grid-template-columns:1fr minmax(0,var(--measure)) 1fr;
+  align-items:stretch;margin-top:44px;
+}
+.body{
+  grid-column:2;padding:26px 30px;border-radius:16px;
+  background:transparent;box-shadow:0 0 0 rgba(20,20,19,0);
+  transition:background .28s ease,box-shadow .28s ease;
+}
+
+.zone{
+  appearance:none;border:0;background:none;padding:0 0 30px;cursor:pointer;
+  display:flex;align-items:flex-end;justify-content:center;
+  color:var(--ink3);opacity:0;
+  transition:opacity .24s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.zone.l{grid-column:1;justify-content:flex-end;padding-right:min(48px,3.5vw)}
+.zone.r{grid-column:3;justify-content:flex-start;padding-left:min(48px,3.5vw)}
+.glyph{
+  /* low in the section, and sticky so a five-level block never scrolls
+     its own control off the screen */
+  position:sticky;bottom:40px;
+  display:flex;align-items:center;justify-content:center;
+  width:60px;height:60px;border-radius:50%;
+  background:transparent;box-shadow:0 0 0 rgba(20,20,19,0);
+  transition:background .24s ease,box-shadow .24s ease,transform .24s ease,color .24s ease;
+}
+.zone svg{width:26px;height:26px;transition:transform .24s ease}
+
+/* One highlight. Hovering anywhere in the section — the prose or either margin —
+   lifts the block and lights both arrows at once. They are a single object, so
+   moving between the text and a control never changes the state. */
+@media(hover:hover){
+  section:hover .body {background:var(--raise);box-shadow:var(--lift)}
+  section:hover .zone {opacity:1;color:var(--clay)}
+  section:hover .glyph{background:var(--raise);box-shadow:var(--lift)}
+}
+/* keyboard gets the same highlight — but :focus-visible, not :focus-within, or a
+   mouse click would pin the section lit after the pointer has left */
+section:has(.zone:focus-visible) .body {background:var(--raise);box-shadow:var(--lift)}
+section:has(.zone:focus-visible) .zone {opacity:1;color:var(--clay)}
+section:has(.zone:focus-visible) .glyph{background:var(--raise);box-shadow:var(--lift)}
+/* the only thing that still tells the two arrows apart: which way each leans */
+.zone.r:hover svg{transform:translateX(3px)}
+.zone.l:hover svg{transform:translateX(-3px)}
+.zone:focus-visible{outline:none}
+.zone:focus-visible .glyph{box-shadow:var(--lift),0 0 0 2px var(--clay-soft)}
+.zone[hidden]{visibility:hidden;display:flex}   /* keep the column, drop the glyph */
+
+/* ---------- prose ---------- */
+h2{font:600 29px/1.28 var(--sans);letter-spacing:-.022em;color:var(--ink);margin:0}
+p{margin:26px 0 0}
+ul,ol{margin:26px 0 0;padding-left:26px}
+li{margin:12px 0 0} li:first-child{margin-top:0}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic}
+a{color:var(--clay);text-decoration:underline;text-underline-offset:2px}
+code{font-family:var(--mono);font-size:.8em;background:var(--sand);border-radius:4px;
+  padding:2px 6px;color:var(--ink);word-break:break-word}
+pre{font:400 14px/1.65 var(--mono);background:var(--sand);border-radius:10px;padding:20px 22px;
+  margin:28px 0 0;overflow-x:auto;color:var(--ink);-webkit-overflow-scrolling:touch}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:28px 0 0;font:400 17px/1.5 var(--sans)}
+th{text-align:left;font:600 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink3);padding:0 14px 10px 0;border-bottom:1px solid var(--rule)}
+td{padding:12px 14px 12px 0;border-bottom:1px solid var(--rule);color:var(--ink2)}
+
+.lvl{margin:0 -14px;padding:1px 14px;border-radius:10px}
+/* Only blocks the reader just unfolded get the wash — never the ones already there.
+   Two clocks on purpose: the text arrives briskly, the highlight lingers and
+   drains away over eight seconds. */
+.lvl.reveal{
+  animation:enter .55s cubic-bezier(.2,.7,.3,1) both,
+            wash  8s   cubic-bezier(.33,0,.5,1)  both;
+}
+@keyframes enter{
+  from{opacity:0;transform:translateY(9px)}
+  to  {opacity:1;transform:none}
+}
+@keyframes wash{
+  0%  {background:rgba(217,119,87,.16)}
+  16% {background:rgba(217,119,87,.16)}
+  100%{background:rgba(217,119,87,0)}
+}
+
+/* ---------- no gutters left: put the zones under the text ---------- */
+@media(max-width:900px){
+  section{display:flex;flex-wrap:wrap;margin-top:36px}
+  .body{flex:1 1 100%;order:1;padding:20px 22px}
+  .zone{order:2;flex:0 0 auto;opacity:.5;padding:0;margin:6px 0 0 16px;align-items:center}
+  .glyph{position:static;width:52px;height:52px;background:var(--raise);
+         box-shadow:0 1px 2px rgba(20,20,19,.06)}
+  .zone svg{width:23px;height:23px}
+  .zone[hidden]{display:none}
+}
+@media(max-width:600px){
+  body{font-size:19px;padding:36px 0 calc(120px + env(safe-area-inset-bottom))}
+  h1{font-size:33px} .dek{font-size:19px} h2{font-size:24px}
+  .notice{font-size:13.5px;gap:6px}
+  pre{font-size:12.5px;padding:16px 18px}
+  table{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div class="brand"><b>How It Broke</b><span>__SUBJECT__</span></div>
+  <div class="notice">
+    <span>Each part expands to show more detail — click the arrows</span>
+    <span class="g">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5M11 18l-6-6 6-6"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+    </span>
+    <span>back and forth.</span>
+  </div>
+  <h1>__HEADLINE__</h1>
+  <p class="dek">__DEK__</p>
+</div>
+
+<article id="parts"></article>
+
+
+<script>
+const ARROW = dir =>
+  '<span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+  'stroke-linecap="round" stroke-linejoin="round"><path d="' +
+  (dir === 'r' ? 'M4 12h15M13 6l6 6-6 6' : 'M20 12H5M11 18l-6-6 6-6') +
+  '"/></svg></span>';
+
+const PARTS = __DATA__;
+const state = PARTS.map(() => 1);
+
+function render(i, animate) {
+  const box = document.getElementById('lvls-' + i);
+  const shown = box.querySelectorAll('.lvl').length;
+  const want = state[i];
+  if (want > shown) {
+    for (let k = shown; k < want; k++) {
+      const d = document.createElement('div');
+      d.className = animate ? 'lvl reveal' : 'lvl';
+      d.innerHTML = PARTS[i].levels[k];
+      // two animations fire animationend; only the slow wash means we are done
+      d.addEventListener('animationend', e => {
+        if (e.animationName === 'wash') d.classList.remove('reveal');
+      });
+      box.appendChild(d);
+    }
+  } else {
+    [...box.querySelectorAll('.lvl')].slice(want).forEach(n => n.remove());
+  }
+  document.getElementById('back-' + i).hidden = want === 1;
+  document.getElementById('fwd-' + i).hidden = want === PARTS[i].levels.length;
+}
+
+const host = document.getElementById('parts');
+PARTS.forEach((p, i) => {
+  const s = document.createElement('section');
+  s.innerHTML =
+    '<button class="zone l" id="back-' + i + '" aria-label="Less detail">' + ARROW('l') + '</button>' +
+    '<div class="body">' +
+      '<h2>' + p.title + '</h2>' +
+      '<div id="lvls-' + i + '"></div>' +
+    '</div>' +
+    '<button class="zone r" id="fwd-' + i + '" aria-label="More detail">' + ARROW('r') + '</button>';
+  host.appendChild(s);
+
+  const back = document.getElementById('back-' + i);
+  const fwd  = document.getElementById('fwd-' + i);
+  back.onclick = () => { if (state[i] > 1) { state[i]--; render(i, false); } };
+  fwd.onclick  = () => { if (state[i] < PARTS[i].levels.length) { state[i]++; render(i, true); } };
+  render(i, false);
+});
+</script>
+</body>
+</html>
