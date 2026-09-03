@@ -42,18 +42,18 @@
     "loss": "~$150M frozen"
   },
   {
-    "id": "enzyme-onyx-cast",
-    "subject": "Enzyme Onyx · caught in audit",
-    "klass": "Unsafe cast",
-    "dek": "Do the subtraction in int256 where negative is legal, then cast back. The cast is where Solidity's overflow guard stops applying.",
-    "loss": "caught before deploy"
+    "id": "cetus-overflow",
+    "subject": "Cetus · 22 May 2025",
+    "klass": "An overflow check that checked the wrong bits",
+    "dek": "A shift left by 64 needed its input under 2¹⁹², but the guard compared against a bound 2⁶⁴ times too generous. The top bits vanished, and billions of units of liquidity cost one token.",
+    "loss": "$223M"
   },
   {
-    "id": "liquity-bold-rounding",
-    "subject": "Liquity BOLD · caught in audit",
+    "id": "balancer-v2-rounding",
+    "subject": "Balancer v2 · 3 Nov 2025",
     "klass": "Rounding that compounds",
-    "dek": "Floor division always rounds one way. Spin that asymmetry about 120 times and a minimum-size position mints zero shares.",
-    "loss": "caught before deploy"
+    "dek": "Floor division always rounds one way. Batch enough dust-sized swaps into one transaction and the pool's invariant drifts until its own shares are on sale.",
+    "loss": "~$120M"
   },
   {
     "id": "constantinople-gas",
