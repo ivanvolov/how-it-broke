@@ -41,23 +41,26 @@ body{
     linear-gradient(90deg,rgba(94,116,136,.07) 1px,transparent 1px);
   background-size:26px 26px;
 }
-.col{max-width:var(--measure);margin:0 auto;padding:0 22px}
+/* ---------- masthead: a static title block ----------
+   It is the very same object as the parts below — the flanked grid, the .body
+   plate, the exact width — only with no arrows and no expand. The page opens on
+   a section, then the expandable ones follow. Framed with corner ticks and a
+   permanent border so it reads as the title block, not a part waiting to lift. */
+.lead{margin-top:0}
+.lead .body{border-color:var(--edge);position:relative}
+.lead .body::before,.lead .body::after{
+  content:"";position:absolute;width:11px;height:11px;pointer-events:none;border:0 solid var(--edge-hi)}
+.lead .body::before{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}
+.lead .body::after{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
+/* it never lifts on hover — it is not a control */
+@media(hover:hover){.lead:hover .body{border-color:var(--edge);box-shadow:var(--rest)}}
 
-/* ---------- masthead ---------- */
-.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .brand b{font:600 14px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .brand span{font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
 h1{font:500 34px/1.18 var(--display);text-transform:uppercase;letter-spacing:.02em;
-  margin:26px 0 0;color:var(--ink);text-wrap:balance}
-.dek{font:400 20.5px/1.55 var(--serif);color:var(--ink2);margin:18px 0 0}
-
-/* sits under the brand, above the headline — so it stays quiet */
-.notice{
-  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
-  margin:14px 0 0;font:400 13px/1.5 var(--mono);color:var(--ink3);
-}
-.notice .g{display:inline-flex;align-items:center;gap:2px;color:var(--accent)}
-.notice svg{width:16px;height:16px}
+  margin:0;color:var(--ink);text-wrap:balance}
+.dek{font:400 20.5px/1.55 var(--serif);color:var(--ink2);margin:16px 0 0}
 
 /* ---------- the section, flanked ---------- */
 section{
@@ -166,7 +169,6 @@ td{padding:12px 14px 12px 0;border-bottom:1px solid var(--edge);color:var(--ink2
 @media(max-width:600px){
   body{font-size:19px;padding:36px 0 calc(120px + env(safe-area-inset-bottom))}
   h1{font-size:25px} .dek{font-size:19px} h2{font-size:24px}
-  .notice{font-size:12px;gap:6px}
   pre{font-size:12.5px;padding:16px 18px}
   table{font-size:15px}
 }
@@ -174,21 +176,13 @@ td{padding:12px 14px 12px 0;border-bottom:1px solid var(--edge);color:var(--ink2
 </head>
 <body>
 
-<div class="col">
-  <div class="brand"><b>How It Broke</b><span>__SUBJECT__</span></div>
-  <div class="notice">
-    <span>Each part expands to show more detail — click the arrows</span>
-    <span class="g">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-        stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5M11 18l-6-6 6-6"/></svg>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-        stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
-    </span>
-    <span>back and forth.</span>
+<section class="lead">
+  <div class="body">
+    <div class="brand"><b>How It Broke</b><span>__SUBJECT__</span></div>
+    <h1>__HEADLINE__</h1>
+    <p class="dek">__DEK__</p>
   </div>
-  <h1>__HEADLINE__</h1>
-  <p class="dek">__DEK__</p>
-</div>
+</section>
 
 <article id="parts"></article>
 

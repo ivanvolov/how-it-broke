@@ -282,7 +282,7 @@ function indexPage(stories, planned) {
 <body>
 <main>
   <div class="brand">How It Broke</div>
-  <h1>Security failures, at the depth you want them.</h1>
+  <h1>Every failure, at the depth you want.</h1>
   <p class="lede">One incident per page, from a single sentence down to the calldata. You choose the depth.</p>
   <ul class="list">
 ${cards}
