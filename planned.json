@@ -1,0 +1,65 @@
+[
+  {
+    "id": "rari-fei",
+    "subject": "Rari Capital / Fei · Apr 2022",
+    "klass": "Reentrancy",
+    "dek": "A lending market that sent the ETH before it finished writing down the debt — so you could take your collateral back while the loan was still in the air.",
+    "loss": "$80M"
+  },
+  {
+    "id": "curve-read-only-reentrancy",
+    "subject": "Curve · Apr 2022",
+    "klass": "Read-only reentrancy",
+    "dek": "A view function nobody guarded, asked at the one moment its two inputs disagreed. Five protocols priced collateral off the answer.",
+    "loss": "~$100M at risk"
+  },
+  {
+    "id": "beanstalk",
+    "subject": "Beanstalk Farms · Apr 2022",
+    "klass": "Flash-loan governance",
+    "dek": "Votes were counted at the instant you asked. Borrow a billion dollars, hold the supermajority for thirteen seconds, vote yourself the treasury.",
+    "loss": "$182M"
+  },
+  {
+    "id": "wormhole",
+    "subject": "Wormhole · Feb 2022",
+    "klass": "Signature verification skipped",
+    "dek": "The bridge checked that the signatures were well-formed and forgot to check that they were real.",
+    "loss": "$326M"
+  },
+  {
+    "id": "mango-markets",
+    "subject": "Mango Markets · Oct 2022",
+    "klass": "Oracle manipulation",
+    "dek": "If the protocol marks your position against a price you can move, your position is worth whatever you decide.",
+    "loss": "$114M"
+  },
+  {
+    "id": "parity-multisig",
+    "subject": "Parity multisig · 2017",
+    "klass": "Missing access control",
+    "dek": "No trick, no clever sequence. A function that could take ownership of every wallet was left callable by anyone.",
+    "loss": "~$150M frozen"
+  },
+  {
+    "id": "enzyme-onyx-cast",
+    "subject": "Enzyme Onyx · caught in audit",
+    "klass": "Unsafe cast",
+    "dek": "Do the subtraction in int256 where negative is legal, then cast back. The cast is where Solidity's overflow guard stops applying.",
+    "loss": "caught before deploy"
+  },
+  {
+    "id": "liquity-bold-rounding",
+    "subject": "Liquity BOLD · caught in audit",
+    "klass": "Rounding that compounds",
+    "dek": "Floor division always rounds one way. Spin that asymmetry about 120 times and a minimum-size position mints zero shares.",
+    "loss": "caught before deploy"
+  },
+  {
+    "id": "constantinople-gas",
+    "subject": "Constantinople / EIP-1283 · Jan 2019",
+    "klass": "A proof resting on a fee schedule",
+    "dek": "transfer() was reentrancy-safe because a storage write cost 5000 gas and it forwards 2300. One EIP cut the price to 200.",
+    "loss": "caught before the fork shipped"
+  }
+]

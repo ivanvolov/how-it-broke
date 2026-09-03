@@ -1,0 +1,53 @@
+name: Deploy to GitHub Pages
+
+# Every push to main rebuilds the stories and publishes dist/.
+# There is nothing to install — build.mjs uses only the Node standard library —
+# so this is a checkout, one node command, and an upload.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow the workflow to publish Pages, and to mint the deployment's id-token.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time. Don't cancel a run that is mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build stories
+        run: npm run build
+
+      - name: Fail if dist is empty
+        run: test -f dist/index.html && test -n "$(ls dist)"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

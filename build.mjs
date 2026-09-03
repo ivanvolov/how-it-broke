@@ -197,14 +197,24 @@ async function buildStory(dir, template) {
 }
 
 /* The index is deliberately plain: it is a table of contents, not a landing
-   page. The stories are the product. */
-function indexPage(stories) {
+   page. The stories are the product. Anything in planned.json is listed after
+   them, greyed and unlinked, so the shape of the series is visible from the
+   first story onward. */
+function indexPage(stories, planned) {
   const cards = stories
     .map(
       (s) => `      <li><a href="./${s.id}/">
         <b>${escapeHtml(s.subject)}</b>
         <span>${escapeHtml(s.dek)}</span>
       </a></li>`
+    )
+    .join("\n");
+  const soon = planned
+    .map(
+      (s) => `      <li class="soon">
+        <b>${escapeHtml(s.subject)} <i>${escapeHtml(s.klass)}</i></b>
+        <span>${escapeHtml(s.dek)}</span>
+      </li>`
     )
     .join("\n");
   return `<!doctype html>
@@ -233,6 +243,14 @@ function indexPage(stories) {
   b{display:block;font:600 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
     color:var(--ink3);transition:color .2s}
   span{display:block;margin-top:10px;font-size:19px;color:var(--ink)}
+  b i{font-style:normal;color:var(--clay);margin-left:8px}
+  li.soon{color:var(--ink3)}
+  li.soon span{color:var(--ink3)}
+  li.soon b i{color:var(--ink3)}
+  li.soon > b,li.soon > span{padding:0}
+  li.soon{padding:22px 0}
+  h2{font:600 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink3);margin:56px 0 0}
 </style>
 </head>
 <body>
@@ -243,6 +261,10 @@ function indexPage(stories) {
   yourself. One sentence, or the post-mortem. Same page.</p>
   <ul>
 ${cards}
+  </ul>
+  <h2>Coming soon</h2>
+  <ul>
+${soon}
   </ul>
 </main>
 </body>
@@ -263,6 +285,9 @@ const built = [];
 for (const dir of dirs) built.push(await buildStory(dir, template));
 
 if (!only) {
-  await writeFile(join(here, "dist/index.html"), indexPage(built), "utf8");
-  console.log(`dist/index.html  ${built.length} ${built.length === 1 ? "story" : "stories"}`);
+  const planned = JSON.parse(await read("planned.json"));
+  await writeFile(join(here, "dist/index.html"), indexPage(built, planned), "utf8");
+  console.log(
+    `dist/index.html  ${built.length} published, ${planned.length} coming soon`
+  );
 }

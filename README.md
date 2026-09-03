@@ -33,6 +33,15 @@ npm run dev       # build, then serve dist/ on :8100
 node build.mjs stories/nomad-bridge    # just one story, no index
 ```
 
+```bash
+npm run deploy    # build, then publish dist/ to the gh-pages branch
+```
+
+A GitHub Actions workflow that does this on every push to `main` is ready in
+`deploy/pages-workflow.yml`. It lives there rather than in `.github/workflows/`
+because pushing that path needs the `workflow` OAuth scope; move it across and
+`npm run deploy` becomes unnecessary.
+
 Each built page is a **single self-contained file** — styles, script and the
 whole story inlined, no external requests. It works from a `file://` path, as an
 email attachment, or on any static host.
@@ -98,13 +107,41 @@ wrong in three separable ways. Catching that is the point.
 
 ## Stories
 
-| | |
-|---|---|
-| `nomad-bridge` | 1 Aug 2022 — a bridge that treated every unseen message as already proven |
+**Published**
 
-Planned: the common failure classes rather than only the famous incidents —
-reentrancy, missing access control, oracle manipulation, unsafe casts, rounding
-that compounds, and governance you can rent for one transaction.
+| | | |
+|---|---|---|
+| Every unseen message pre-approved | Nomad Bridge · 1 Aug 2022 | ~$186M |
+
+**Coming soon**
+
+| | | |
+|---|---|---|
+| Reentrancy | Rari Capital / Fei · Apr 2022 | $80M |
+| Read-only reentrancy | Curve · Apr 2022 | ~$100M at risk |
+| Flash-loan governance | Beanstalk Farms · Apr 2022 | $182M |
+| Signature verification skipped | Wormhole · Feb 2022 | $326M |
+| Oracle manipulation | Mango Markets · Oct 2022 | $114M |
+| Missing access control | Parity multisig · 2017 | ~$150M frozen |
+| Unsafe cast | Enzyme Onyx · caught in audit | caught before deploy |
+| Rounding that compounds | Liquity BOLD · caught in audit | caught before deploy |
+| A proof resting on a fee schedule | Constantinople / EIP-1283 · Jan 2019 | caught before the fork shipped |
+
+The list is chosen by **failure class**, not by headline size. Each one is a
+different way to be wrong: a check that measures the wrong thing, an ordering
+mistake, a type-system escape hatch, an assumption about who can call you, an
+assumption about what a number costs. Between them they cover most of what
+"Critical" actually means in practice.
+
+Three of the nine were **caught before anything was lost** — two in an audit,
+one in a protocol upgrade that was pulled two days before it shipped. Those are
+here on purpose. A series that only covers disasters teaches you that security
+is about disasters; the near-misses are where you see the process working, and
+they are the ones an auditor learns most from.
+
+Figures above are provisional. Each becomes a real number when the story is
+written and checked against primary sources — the Nomad one moved from the
+widely-quoted $190M to a measured ~$185M that way.
 
 ## Notes
 

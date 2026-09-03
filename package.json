@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Security failures explained at the depth you want them — three parts, five additive levels each, dialled by the reader.",
+  "description": "Security failures explained at the depth you want them \u2014 three parts, five additive levels each, dialled by the reader.",
   "scripts": {
     "build": "node build.mjs",
-    "dev": "node build.mjs && python3 -m http.server 8100 --directory dist"
+    "dev": "node build.mjs && python3 -m http.server 8100 --directory dist",
+    "deploy": "sh scripts/deploy-pages.sh"
   }
 }
