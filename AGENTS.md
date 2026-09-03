@@ -69,6 +69,11 @@ Unwritten stories are listed in `planned.json` — `{id, subject, klass, dek,
 loss}` per entry. The index page renders them greyed and unlinked after the
 published ones. When a story ships, delete its entry and the folder takes over.
 
+The list is curated by **failure class**, not headline size — each entry should
+be a different way to be wrong, and at least one near-miss stays in on purpose.
+Loss figures are provisional until the story is written and checked against
+primary sources.
+
 ## The hard part is the writing, not the format
 
 Each level has to be a genuine increment. The failure mode is writing five levels
