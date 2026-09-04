@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#E7EBEE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E7EBEE'/%3E%3Cpath d='M8 16h13M15 10l6 6-6 6' fill='none' stroke='%23D9531E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<title>$186 million, and the check that always said yes. — How It Broke</title>
+<style>
+/* Blueprint ground. Each part is a white drafting plate that sits on the grid at
+   rest; hovering (or focusing the keyboard) inks its border and raises the two
+   margin arrows. The reveal + wash animation is the original, just quicker. */
+:root{
+  --sans:"Avenir Next",Avenir,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"Helvetica Neue",sans-serif;
+  --serif:Charter,Georgia,Cambria,"Times New Roman",serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Monaco,Consolas,monospace;
+  --display:Futura,"Gill Sans","Avenir Next",var(--sans);
+  --measure:724px;
+  --ground:#E7EBEE;      /* gridded blueprint paper */
+  --panel:#FBFCFD;       /* the drafting plate */
+  --edge:#B6C2CD;
+  --edge-hi:#5E7488;
+  --codebg:#EDF1F4;
+  --ink:#16232D;
+  --ink2:#53646F;
+  --ink3:#84939E;
+  --accent:#D9531E;      /* international orange, used sparingly */
+  --washc:rgba(217,83,30,.14);
+  --rest:0 1px 2px rgba(22,35,45,.05),0 8px 20px -14px rgba(22,35,45,.22);
+  --lift:0 2px 4px rgba(22,35,45,.06),0 16px 36px -12px rgba(22,35,45,.30);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font:400 21px/1.68 var(--serif);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  padding:56px 0 calc(140px + env(safe-area-inset-bottom));
+  background-image:
+    linear-gradient(rgba(94,116,136,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(94,116,136,.07) 1px,transparent 1px);
+  background-size:26px 26px;
+}
+/* ---------- masthead: a static title block ----------
+   It is the very same object as the parts below — the flanked grid, the .body
+   plate, the exact width — only with no arrows and no expand. The page opens on
+   a section, then the expandable ones follow. Framed with corner ticks and a
+   permanent border so it reads as the title block, not a part waiting to lift. */
+.lead{margin-top:0}
+.lead .body{border-color:var(--edge);position:relative}
+.lead .body::before,.lead .body::after{
+  content:"";position:absolute;width:11px;height:11px;pointer-events:none;border:0 solid var(--edge-hi)}
+.lead .body::before{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}
+.lead .body::after{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
+/* it never lifts on hover — it is not a control */
+@media(hover:hover){.lead:hover .body{border-color:var(--edge);box-shadow:var(--rest)}}
+
+/* three tiers: the site strip (a way back), the subject eyebrow, the headline */
+.home{display:flex;align-items:center;gap:10px;
+  font:600 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;
+  padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--edge)}
+.home svg{width:15px;height:15px;flex:none;transition:transform .2s ease}
+@media(hover:hover){.home:hover svg{transform:translateX(-3px)}}
+.home:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.subject{font:400 12px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink2);margin:0 0 10px}
+h1{font:500 34px/1.18 var(--display);text-transform:uppercase;letter-spacing:.02em;
+  margin:0;color:var(--ink);text-wrap:balance}
+.dek{font:400 20.5px/1.55 var(--serif);color:var(--ink2);margin:16px 0 0}
+
+/* ---------- the section, flanked ---------- */
+section{
+  display:grid;
+  grid-template-columns:1fr minmax(0,var(--measure)) 1fr;
+  align-items:stretch;margin-top:40px;
+}
+.body{
+  grid-column:2;padding:26px 30px;
+  background:var(--panel);              /* the plate is always on */
+  border:1px solid transparent;         /* the border only appears on hover */
+  box-shadow:var(--rest);
+  transition:border-color .24s ease,box-shadow .24s ease;
+}
+
+.zone{
+  appearance:none;border:0;background:none;padding:0 0 30px;cursor:pointer;
+  display:flex;align-items:flex-end;justify-content:center;
+  color:var(--ink3);opacity:0;
+  transition:opacity .24s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.zone.l{grid-column:1;justify-content:flex-end;padding-right:min(48px,3.5vw)}
+.zone.r{grid-column:3;justify-content:flex-start;padding-left:min(48px,3.5vw)}
+.glyph{
+  /* low in the section, and sticky so a five-level block never scrolls
+     its own control off the screen */
+  position:sticky;bottom:40px;
+  display:flex;align-items:center;justify-content:center;
+  width:60px;height:60px;
+  background:var(--panel);box-shadow:0 0 0 1px var(--edge);
+  transition:box-shadow .24s ease,transform .24s ease,color .24s ease;
+}
+.zone svg{width:26px;height:26px;transition:transform .24s ease}
+
+/* One highlight. Hovering anywhere in the section — the prose or either margin —
+   inks the plate's border and lights both arrows at once. They are a single
+   object, so moving between the text and a control never changes the state. */
+@media(hover:hover){
+  section:hover .body {border-color:var(--edge-hi);box-shadow:var(--lift)}
+  section:hover .zone {opacity:1;color:var(--accent)}
+  section:hover .glyph{box-shadow:var(--lift),0 0 0 1px var(--edge-hi)}
+}
+/* keyboard gets the same highlight — but :focus-visible, not :focus-within, or a
+   mouse click would pin the section lit after the pointer has left */
+section:has(.zone:focus-visible) .body {border-color:var(--edge-hi);box-shadow:var(--lift)}
+section:has(.zone:focus-visible) .zone {opacity:1;color:var(--accent)}
+section:has(.zone:focus-visible) .glyph{box-shadow:var(--lift),0 0 0 1px var(--edge-hi)}
+/* the only thing that still tells the two arrows apart: which way each leans */
+.zone.r:hover svg{transform:translateX(3px)}
+.zone.l:hover svg{transform:translateX(-3px)}
+.zone:focus-visible{outline:none}
+.zone:focus-visible .glyph{box-shadow:var(--lift),0 0 0 2px var(--accent)}
+.zone[hidden]{visibility:hidden;display:flex}   /* keep the column, drop the glyph */
+
+/* ---------- prose ---------- */
+h2{font:600 28px/1.28 var(--sans);letter-spacing:-.02em;color:var(--ink);margin:0;text-wrap:balance}
+p{margin:26px 0 0}
+ul,ol{margin:26px 0 0;padding-left:26px}
+li{margin:12px 0 0} li:first-child{margin-top:0}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic}
+a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+code{font-family:var(--mono);font-size:.78em;background:var(--codebg);border-radius:4px;
+  padding:2px 6px;color:var(--ink);word-break:break-word}
+pre{font:400 14px/1.65 var(--mono);background:var(--codebg);border-radius:8px;padding:20px 22px;
+  margin:28px 0 0;overflow-x:auto;color:var(--ink);-webkit-overflow-scrolling:touch}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:28px 0 0;font:400 16.5px/1.5 var(--sans)}
+th{text-align:left;font:600 11.5px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink3);padding:0 14px 10px 0;border-bottom:1px solid var(--edge)}
+td{padding:12px 14px 12px 0;border-bottom:1px solid var(--edge);color:var(--ink2);
+  font-variant-numeric:tabular-nums}
+
+.lvl{margin:0 -14px;padding:1px 14px;border-radius:6px}
+/* Only blocks the reader just unfolded get the wash — never the ones already there.
+   Two clocks on purpose: the text arrives briskly, the highlight lingers a beat
+   and drains away over a couple of seconds. */
+.lvl.reveal{
+  animation:enter .55s cubic-bezier(.2,.7,.3,1) both,
+            wash  2.6s cubic-bezier(.33,0,.5,1)  both;
+}
+@keyframes enter{
+  from{opacity:0;transform:translateY(9px)}
+  to  {opacity:1;transform:none}
+}
+@keyframes wash{
+  0%  {background:var(--washc)}
+  30% {background:var(--washc)}
+  100%{background:transparent}
+}
+@media(prefers-reduced-motion:reduce){
+  .lvl.reveal{animation:none}
+  *{transition-duration:.01ms !important}
+}
+
+/* ---------- no gutters left: put the zones under the text ---------- */
+@media(max-width:900px){
+  section{display:flex;flex-wrap:wrap;margin-top:32px}
+  .body{flex:1 1 100%;order:1;padding:20px 22px}
+  .zone{order:2;flex:0 0 auto;opacity:.55;padding:0;margin:8px 0 0 16px;align-items:center}
+  .glyph{position:static;width:52px;height:52px}
+  .zone svg{width:23px;height:23px}
+  .zone[hidden]{display:none}
+}
+@media(max-width:600px){
+  body{font-size:19px;padding:36px 0 calc(120px + env(safe-area-inset-bottom))}
+  h1{font-size:25px} .dek{font-size:19px} h2{font-size:24px}
+  pre{font-size:12.5px;padding:16px 18px}
+  table{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<section class="lead">
+  <div class="body">
+    <a class="home" href="../" aria-label="How It Broke — all stories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 18l-6-6 6-6"/></svg>How It Broke</a>
+    <div class="subject">Nomad Bridge · 1 Aug 2022</div>
+    <h1>$186 million, and the check that always said yes.</h1>
+    <p class="dek">A bridge spent 41 days treating every message it had never seen before as already proven. Then, in one afternoon, several hundred people noticed.</p>
+  </div>
+</section>
+
+<article id="parts"></article>
+
+
+<script>
+const ARROW = dir =>
+  '<span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+  'stroke-linecap="round" stroke-linejoin="round"><path d="' +
+  (dir === 'r' ? 'M4 12h15M13 6l6 6-6 6' : 'M20 12H5M11 18l-6-6 6-6') +
+  '"/></svg></span>';
+
+const PARTS = [{"n":1,"title":"What was Nomad Bridge, and how much did it hold?","levels":["<p>Nomad was a bridge — you locked tokens on one chain and received them on another — and it was holding roughly <strong>$186 million</strong> on the day it broke.</p>","<p>No bridge can actually move a coin between chains. It locks the real asset on one side and sends a message to the other side saying <em>release this much, to this person</em>. So a bridge's entire security problem collapses into one question: <strong>is this message genuine?</strong></p><p>On Ethereum, the contract that answered that question was called <code>Replica</code>.</p>","<p><code>Replica</code> answered it in two public steps. <code>prove(leaf, proof, index)</code> checked that a message really belonged to a batch the other chain had committed to — a root signed by Nomad's bonded updater and aged past a fraud window — and wrote that fact down. <code>process(message)</code> then delivered it, by calling <code>recipient.handle(...)</code> on the bridge's router.</p><p>Anyone could call either one — there was no whitelist, and there didn't need to be, because all the security was supposed to live in what <code>prove</code> had recorded.</p><p>Nomad was the canonical bridge for Moonbeam, Evmos, and Milkomeda, and Connext was building the next version of its network on top of Nomad's messaging layer.</p>","<p>What was actually in it: about <strong>1,028 WBTC, 22,877 WETH, 87.5M USDC, 8.6M USDT, 4.5M DAI, 7.3M FRAX</strong>, plus a long tail of thin-float alts — IAG, CQT, GERO, HBOT, CARDS, C3.</p><p>Nomad had raised $22.4M at a <strong>$225M valuation</strong> in April 2022, led by Polychain. It disclosed a slate of strategic backers — Coinbase Ventures, OpenSea, Crypto.com Capital, Wintermute, Polygon — on <strong>28 July 2022</strong>. Four days before the hack.</p>","<p>The <code>Replica</code> that was drained is at <code>0x5D94309E5a0090b165FA4181519701637B6DAEBA</code>, a proxy behind UpgradeBeacon <code>0x0876dFe4...</code>. Its <code>remoteDomain</code> is uint32 <code>1635148152</code> — ASCII <code>\"avax\"</code> — which matters later, because <code>process()</code> never checked a message's <em>claimed</em> origin against it. The <code>BridgeRouter</code> it delivered into is <code>0x88A69B4E698A4B090DF6CF5Bd7B2D47325Ad30A3</code>. Five Replicas were live on Ethereum.</p><p>The loss figure differs by source, and it is a <strong>pricing</strong> question rather than a factual dispute — the spread comes entirely from how you mark the illiquid alts:</p><table><thead><tr><th>Source</th><th>Figure</th></tr></thead><tbody><tr><td>FTC complaint</td><td>$186M</td></tr><tr><td>Rekt</td><td>$190M</td></tr><tr><td>Contemporaneous press (CoinDesk)</td><td>$190.4M</td></tr><tr><td>Coinbase</td><td>\"over $186M\"</td></tr><tr><td>Direct measurement of ERC-20 outflow</td><td>~$185M</td></tr><tr><td>Elliptic</td><td>$156.4M</td></tr></tbody></table>"]},{"n":2,"title":"How was it exploited?","levels":["<p>A code update quietly made <strong>every message the bridge had never seen before count as already proven</strong>, so anyone could write a message asking for money and the bridge would pay it.</p>","<p>It took two changes, two months apart, and neither was dangerous on its own.</p><p>When the contract was first switched on in <strong>April 2022</strong>, setup pre-approved the starting point — a brand-new bridge has no signed commitment yet, and \"nothing committed yet\" is written down as literal zero. Approving zero was correct, and harmless.</p><p>In <strong>June 2022</strong> a refactor changed how <code>process()</code> checked a message. That harmless zero became a skeleton key. The hole stayed open for <strong>41 days</strong> before anyone noticed — and then, on <strong>1 August 2022</strong>, hundreds of people noticed at once.</p>","<p>The refactor changed what <code>messages</code> stores — from a status flag to <em>the root a message was proven under</em> — and rewrote the guard accordingly, from <code>messages[h] == MessageStatus.Proven</code> to <code>acceptableRoot(messages[h])</code>.</p><p>You already know what a mapping returns for a key that was never written: zero. So an unseen message now handed <code>acceptableRoot</code> a <strong>zero</strong> — and April had already approved zero.</p><p>Anyone could call <code>process(bytes)</code> directly. It takes no proof argument at all.</p><p>The swarm followed from one detail: <code>process()</code> marks a message hash <code>PROCESSED</code>, so replaying identical calldata reverts. But change the payee and you change the hash, which makes it a brand-new unprocessed message. <strong>Swapping in your own address wasn't greed — it was the only way the copy worked.</strong> Two transactions in the same block differed in exactly 20 bytes: the payee's address.</p>","<p>April, in <code>initialize()</code> — which runs exactly once, at deployment:</p><pre class=\"lang-solidity\">confirmAt[_committedRoot] = 1;   // _committedRoot == bytes32(0)</pre><p>June, the refactor:</p><pre class=\"lang-diff\">- mapping(bytes32 =&gt; MessageStatus) public messages;\n- require(messages[_messageHash] == MessageStatus.Proven, \"!proven\");\n+ mapping(bytes32 =&gt; bytes32) public messages;\n+ require(acceptableRoot(messages[_messageHash]), \"!proven\");</pre><p>And the function that decides everything:</p><pre class=\"lang-solidity\">function acceptableRoot(bytes32 _root)\n  public view returns (bool)\n{\n  if (_root == LEGACY_STATUS_PROVEN)\n    return true;                // 1\n  if (_root == LEGACY_STATUS_PROCESSED)\n    return false;               // 2\n                                // 0: nothing\n  uint256 _time = confirmAt[_root];\n  if (_time == 0) return false;\n  return block.timestamp &gt;= _time;\n}</pre><p>Cases for 1 and 2. None for 0 — though the same commit declared a constant for it, <code>LEGACY_STATUS_NONE = bytes32(0)</code>, and then never referenced it.</p><p>The message was not arbitrary, though. Four fields had to be right: <code>destination</code> had to be <code>\"eth\"</code>; <code>recipient</code> had to be a contract implementing <code>IMessageRecipient</code> (the BridgeRouter); and because the router's <code>handle()</code> is <code>onlyRemoteRouter</code>, <code>origin</code> + <code>sender</code> had to name an <strong>enrolled</strong> remote router. Get those four right and the body said whatever you wanted — 100 WBTC, to you.</p>","<p>Exact provenance, both halves:</p><ul><li><strong>April.</strong> <code>initialize()</code> ran once, inside the proxy's creation transaction <code>0x99662dac…</code>, block <strong>14,629,758</strong>, 2022-04-21 18:00:05 UTC. <code>confirmAt(0x00)</code> has read 1 from that block on — before it, the proxy didn't exist — and still reads 1 as of September 2026.</li><li><strong>June.</strong> Beacon upgrade <code>0x7bccd64f…</code>, block <strong>15,003,660</strong>, 2022-06-21 18:39:29 UTC — one governance transaction upgrading six beacons system-wide, the Replica implementation among them — shipping monorepo PR #289.</li></ul><p>Replaying the exploit calldata reverts <code>!proven</code> at block 15,003,659 and succeeds at 15,003,661. So the real exposure window is <strong>41 days</strong>, not the 102 that write-ups dating the bug to April imply.</p><p>Three things commonly stated that are wrong:</p><ol><li><em>\"A routine upgrade set <code>committedRoot</code> to zero.\"</em> <code>committedRoot</code> was <strong>not</strong> zero at hack time — it read <code>0xad560880…</code>. Only <code>confirmAt[0]</code> persisted from April.</li><li><em>\"The auditors found it and were ignored.\"</em> Quantstamp's <strong>QSP-19, \"Proving With An Empty Leaf\"</strong> (Low Risk, Acknowledged) is about an empty <em>leaf</em> passed to <code>prove()</code>. This was an empty <em>root</em> read inside <code>process()</code>, and the attack never called <code>prove()</code>. Adjacent bug, not the same one. Zellic later measured that only ~18.6% of the deployed <code>Replica.sol</code> had been audited.</li><li><em>\"It started at 21:32 UTC.\"</em> That's when the 100-WBTC drain began. The first known successful unproven <code>process()</code> calls were at <strong>19:50:37 UTC</strong>, 102 minutes earlier, for ~200 TIC. And in the very block the WBTC drain began, four different addresses each pulled 100 WBTC — the original attacker's transaction landed last of the four.</li></ol><p>Scale: 300+ distinct addresses, 960 transactions (1,175 individual withdrawals), outflow exactly zero after block 15,259,772. The original attacker ended up with about <strong>$2.89M of ~$185M</strong>.</p>"]},{"n":3,"title":"What was lost, and what happened to Nomad afterwards?","levels":["<p>About <strong>$186 million</strong> left in roughly two hours. Around a fifth came back, the bridge never reopened for real, and the company went quiet.</p>","<p>Within days Nomad offered a deal: return 90%, keep 10% as a bounty, no legal action. That brought back about <strong>$37.5M — roughly 20%</strong>.</p><p>The bridge was redeployed in December 2022, but <strong>recovery-only</strong>: no new asset was ever allowed to bridge again. It existed so people could claim a pro-rata share of what had been recovered.</p>","<p>To claim, you had to pass <strong>KYC through CoinList</strong> — on a bridge that had never asked for KYC to take your deposit — then bridge your madAssets back for a soulbound NFT recording what you'd lost, then claim your fraction of whatever had been recovered in that particular token.</p><p>Nomad's last public statement, <strong>12 January 2023</strong>, said $9M had been claimed. That is about <strong>5% of what was lost</strong>, and it is the last number they ever published.</p><p>The knock-on hit the chains that depended on it: Moonbeam's TVL fell from $187M to ~$59M within days, Evmos from $5.7M to $1.3M. Connext — which was building on Nomad's messaging layer — pivoted to routing through canonical L2 bridges instead, kept the same message-dispatch interface, and launched anyway in February 2023.</p>","<p>Nomad itself simply stopped. No shutdown announcement, no dissolution filing. The last tweet is January 2023; the GitHub org went essentially dormant after December 2022, until SDK commits quietly resumed in September 2025 — three months before the FTC filed. nomad.xyz still carries the August 2022 white-hat banner — along with some unreplaced lorem ipsum.</p><p>In <strong>December 2025</strong> the FTC brought an action against Illusory Systems under Section 5 of the FTC Act, alleging it marketed itself as \"security-first\" while lacking secure coding practices, a vulnerability-disclosure process, or a kill switch. The complaint quotes internal messages, including an engineer's warning that <em>\"continually punting is how we eventually end up getting rugged without noticing an error.\"</em> The proposed order requires making the recovered ~$37.5M available to users and ten years of biennial security assessments.</p><p>One person has been named: <strong>Alexander Gurevich</strong>, alleged first exploiter, ~$2.89M. Indicted in California in August 2023; arrested at Ben Gurion Airport in May 2025 boarding a flight to Russia, days after legally changing his name; Israel has since approved his extradition to the US.</p>","<p>Where the record goes quiet, and the caveats that matter — every live claim below re-checked 4 September 2026:</p><ul><li><strong>The FTC order still isn't final.</strong> The docket shows nothing after the 16 December 2025 filing, despite secondary coverage describing it as settled.</li><li><strong>The promised relaunch audit was never published.</strong> <code>docs.nomad.xyz</code> still lists only the two pre-hack audits; the relaunch auditor is unknown.</li><li><strong>The claim portal is gone.</strong> <code>coinlist.co/help/nomad-recovery</code> 404s. The recovery wallet <code>0x94A84433…</code> holds 0.168 ETH.</li><li><strong>No law-enforcement recovery, no exchange freeze, no stablecoin blacklist ever happened.</strong> ZachXBT documented ~$45M in USDC that sat freezable in three exploiter addresses for 30–45 minutes; Circle never touched it. In August 2024 a labelled exploiter address moved 14,500 ETH into Tornado Cash.</li><li><strong>The civil suit mostly failed.</strong> In <em>Singh v. Illusory Systems</em> the RICO claims were dismissed in March 2024 and negligence/conversion fell to Utah's economic-loss rule. One fraud claim survived; its outcome is unreported.</li><li><strong>Gurevich has not been convicted or sentenced.</strong> Of the 300+ addresses that took part, no others were ever publicly named — including the dozens of addresses that returned funds under the amnesty.</li></ul><p>Nobody knows how much of the $37.5M ultimately reached users. The FTC's 2025 order — implying a meaningful remainder was still undistributed three years later — is the strongest evidence that much of it never did.</p>"]}];
+const state = PARTS.map(() => 1);
+
+function render(i, animate) {
+  const box = document.getElementById('lvls-' + i);
+  const shown = box.querySelectorAll('.lvl').length;
+  const want = state[i];
+  if (want > shown) {
+    for (let k = shown; k < want; k++) {
+      const d = document.createElement('div');
+      d.className = animate ? 'lvl reveal' : 'lvl';
+      d.innerHTML = PARTS[i].levels[k];
+      // two animations fire animationend; only the slow wash means we are done
+      d.addEventListener('animationend', e => {
+        if (e.animationName === 'wash') d.classList.remove('reveal');
+      });
+      box.appendChild(d);
+    }
+  } else {
+    [...box.querySelectorAll('.lvl')].slice(want).forEach(n => n.remove());
+  }
+  document.getElementById('back-' + i).hidden = want === 1;
+  document.getElementById('fwd-' + i).hidden = want === PARTS[i].levels.length;
+}
+
+const host = document.getElementById('parts');
+PARTS.forEach((p, i) => {
+  const s = document.createElement('section');
+  s.innerHTML =
+    '<button class="zone l" id="back-' + i + '" aria-label="Less detail">' + ARROW('l') + '</button>' +
+    '<div class="body">' +
+      '<h2>' + p.title + '</h2>' +
+      '<div id="lvls-' + i + '"></div>' +
+    '</div>' +
+    '<button class="zone r" id="fwd-' + i + '" aria-label="More detail">' + ARROW('r') + '</button>';
+  host.appendChild(s);
+
+  const back = document.getElementById('back-' + i);
+  const fwd  = document.getElementById('fwd-' + i);
+  back.onclick = () => { if (state[i] > 1) { state[i]--; render(i, false); } };
+  fwd.onclick  = () => { if (state[i] < PARTS[i].levels.length) { state[i]++; render(i, true); } };
+  render(i, false);
+});
+</script>
+</body>
+</html>
