@@ -24,7 +24,7 @@
     "id": "wormhole",
     "subject": "Wormhole · Feb 2022",
     "klass": "Signature verification skipped",
-    "dek": "The bridge checked that the signatures were well-formed and forgot to check that they were real.",
+    "dek": "The bridge asked whether the signature check had run — and read the answer from an account the attacker supplied.",
     "loss": "$326M"
   },
   {
@@ -38,7 +38,7 @@
     "id": "parity-multisig",
     "subject": "Parity multisig · 2017",
     "klass": "Missing access control",
-    "dek": "No trick, no clever sequence. A function that could take ownership of every wallet was left callable by anyone.",
+    "dek": "No trick, no clever sequence. A function that could take ownership of the one library every wallet ran on was left callable by anyone. A stranger initialized it, then killed it.",
     "loss": "~$150M frozen"
   },
   {
@@ -59,7 +59,7 @@
     "id": "constantinople-gas",
     "subject": "Constantinople / EIP-1283 · Jan 2019",
     "klass": "A proof resting on a fee schedule",
-    "dek": "transfer() was reentrancy-safe because a storage write cost 5000 gas and it forwards 2300. One EIP cut the price to 200.",
+    "dek": "transfer() was reentrancy-safe because a storage write cost 5000 gas and it forwards 2300. One EIP cut a repeat write to 200.",
     "loss": "caught before the fork shipped"
   }
 ]

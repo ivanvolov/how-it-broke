@@ -55,9 +55,16 @@ body{
 /* it never lifts on hover — it is not a control */
 @media(hover:hover){.lead:hover .body{border-color:var(--edge);box-shadow:var(--rest)}}
 
-.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-.brand b{font:600 14px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
-.brand span{font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+/* three tiers: the site strip (a way back), the subject eyebrow, the headline */
+.home{display:flex;align-items:center;gap:10px;
+  font:600 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;
+  padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--edge)}
+.home svg{width:15px;height:15px;flex:none;transition:transform .2s ease}
+@media(hover:hover){.home:hover svg{transform:translateX(-3px)}}
+.home:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.subject{font:400 12px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink2);margin:0 0 10px}
 h1{font:500 34px/1.18 var(--display);text-transform:uppercase;letter-spacing:.02em;
   margin:0;color:var(--ink);text-wrap:balance}
 .dek{font:400 20.5px/1.55 var(--serif);color:var(--ink2);margin:16px 0 0}
@@ -178,7 +185,8 @@ td{padding:12px 14px 12px 0;border-bottom:1px solid var(--edge);color:var(--ink2
 
 <section class="lead">
   <div class="body">
-    <div class="brand"><b>How It Broke</b><span>__SUBJECT__</span></div>
+    <a class="home" href="../" aria-label="How It Broke — all stories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 18l-6-6 6-6"/></svg>How It Broke</a>
+    <div class="subject">__SUBJECT__</div>
     <h1>__HEADLINE__</h1>
     <p class="dek">__DEK__</p>
   </div>

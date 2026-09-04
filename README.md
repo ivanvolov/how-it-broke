@@ -14,7 +14,7 @@ that you dial yourself**. Level 1 is one sentence. Level 5 is what an auditor
 would want, including the parts where the public record contradicts itself.
 
 The levels are **additive** — turning the dial up never asks you to re-read a
-paragraph you already understood, you only ever get *more*. Hover a section and
+paragraph you already understood — you only ever get *more*. Hover a section and
 arrows appear in the margins: left for less, right for more. New text arrives
 with a slow wash that drains over a few seconds, so you can see exactly what was
 just added. On a phone the arrows sit under the text.
